@@ -20,6 +20,10 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_USE_OIDC: true
 
+    defaults:
+      run:
+        working-directory: terraform
+        
     steps:
       # 1. Checkout the repository code
       - name: Checkout Code
