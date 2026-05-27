@@ -1,0 +1,48 @@
+name: "Azure Terraform Plan (Job Level OIDC)"
+
+on:
+ workflow_dispatch: 
+
+# 🌟 IMPORTANT: GitHub ko Azure se connect karne ke liye token permission zaroori hai
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform-plan:
+    name: "Azure TF Init & Plan"
+    runs-on: ubuntu-latest
+    
+    # 🌟 JOB LEVEL ENV (OIDC Version): Ab kisi bhi step me login task nahi chahiye
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_USE_OIDC: true
+
+    steps:
+      # 1. Checkout the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Setup Terraform CLI
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      # 3. Check code formatting
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      # 4. Initialize Terraform (Automatic OIDC use karega)
+      - name: Terraform Init
+        run: terraform init
+
+      # 5. Validate configuration files
+      - name: Terraform Validate
+        run: terraform validate
+
+      # 6. Generate Azure Infrastructure Plan
+      - name: Terraform Plan
+        run: terraform plan -no-color -out=tfplan
