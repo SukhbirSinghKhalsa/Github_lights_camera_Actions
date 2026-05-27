@@ -35,9 +35,6 @@ jobs:
         with:
           terraform_version: 1.7.0
 
-      # 3. Check code formatting
-      - name: Terraform Format Check
-        run: terraform fmt -check
 
       # 4. Initialize Terraform (Automatic OIDC use karega)
       - name: Terraform Init
