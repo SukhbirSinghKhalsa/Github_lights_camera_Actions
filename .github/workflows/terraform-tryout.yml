@@ -13,7 +13,9 @@ jobs:
       ARM_CLIENT_ID: d92cf514-63bf-420a-9d83-33b05cffe961
       ARM_TENANT_ID: 0ea3b997-cc5d-4c90-a4a4-5c41a2364f32
       ARM_SUBSCRIPTION_ID: f3dd8656-66bf-4af3-bce9-c04adf655c30
-      
+    defaults:
+      run:
+        working-directory: terraform
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.2
