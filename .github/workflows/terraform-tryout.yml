@@ -1,0 +1,34 @@
+name: Terraform Practise
+on: 
+  workflow_dispatch: 
+
+# permissions: 
+#   id-token: write
+#   contents: read
+
+jobs:
+  terraform-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        
+      - name: Azure Login
+        uses: Azure/login@v3
+        with:
+          client-id: d92cf514-63bf-420a-9d83-33b05cffe961
+          tenant-id: 0ea3b997-cc5d-4c90-a4a4-5c41a2364f32
+          subscription-id: f3dd8656-66bf-4af3-bce9-c04adf655c30
+          
+      - name: Intialize the terraform with providers, modules, backend
+        run: terraform init
+        
+      - name: Validate the terraform syntax for code quality checks
+        run: terraform validate
+        
+      - name: Check the plan to be executed for your current Infra
+        run: terraform plan
+
+
+      
+      
